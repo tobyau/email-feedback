@@ -8,7 +8,7 @@ const app = express(); // express() generates a new application
 // req -> object representing request
 // res -> obj representing outgoing response
 app.get('/', (req, res) => {
-  res.send({ hi: 'there'});
+  res.send({ nani: 'kore'});
 });
 
 
