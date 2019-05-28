@@ -8,7 +8,7 @@ const User = mongoose.model('users');
 // user refers to the User instance with user model from db
 // user is pulled out of db
 // done ( error message, identify user )
-// turn user instance to id 
+// turn user instance to id
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -25,7 +25,8 @@ passport.use(
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     // after user grants permission, send them to callbackURL
-    callbackURL: '/auth/google/callback'
+    callbackURL: '/auth/google/callback',
+    proxy: true
   },
   // callback function, done is a callback
   (accessToken, refreshToken, profile, done) => {
