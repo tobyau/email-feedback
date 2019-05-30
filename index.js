@@ -9,7 +9,7 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport'); // compiles things in passport.js
 
-mongoose.connect(keys.mongoURI); // connect mongoose to remote mongoDB in mongoDB Atlas
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true }); // connect mongoose to remote mongoDB in mongoDB Atlas
 
 const app = express(); // express() generates a new express application
 

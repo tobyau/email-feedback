@@ -26,19 +26,18 @@ passport.use(
     clientSecret: keys.googleClientSecret,
     // after user grants permission, send them to callbackURL
     callbackURL: '/auth/google/callback',
-    proxy: true
+    proxy: true // calculates http vs https
   },
-  // callback function, done is a callback
-  (accessToken, refreshToken, profile, done) => {
-    User.findOne({ googleID: profile.id }).then(existingUser => {
-      if(existingUser) {  // if exists, we already have a record with given ID
-        done(null, existingUser);
+    // callback function, done is a callback
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleID: profile.id })
+      if(existingUser) {
+        // if exists, we already have a record with given ID
+        return done(null, existingUser);
       }
-      else { // we dont have user record
-        new User({ googleID: profile.id })  // creates new model instance
-          .save() // saves model instance to db
-          .then(user => done(null, user));
-      }
-    });
-  })
+      // we dont have user record
+      const user = await new User({ googleID: profile.id }).save() // saves new model instance to db
+      done(null, user);
+    }
+  )
 );

@@ -10,11 +10,18 @@ module.exports = app => {
   );
 
   // handle case of routing to callback url
-  app.get('/auth/google/callback', passport.authenticate('google'))
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/surveys');
+    }
+  );
 
   app.get('/api/logout', (req, res) => {
     req.logout(); // kills the cookie
-    res.send(req.user); // confirms user is removed
+    // res.send(req.user); // confirms user is removed
+    res.redirect('/');
   });
 
   app.get('/api/current_user', (req, res) => {
