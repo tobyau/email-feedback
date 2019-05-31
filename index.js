@@ -5,6 +5,7 @@ const express = require('express'); // import express
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
 require('./services/passport'); // compiles things in passport.js
@@ -12,6 +13,9 @@ require('./services/passport'); // compiles things in passport.js
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true }); // connect mongoose to remote mongoDB in mongoDB Atlas
 
 const app = express(); // express() generates a new express application
+
+/****  middleware ****/
+app.use(bodyParser.json()); // middleware parses body, assign it to req.body
 
 // enabling cookies in our app
 app.use(
@@ -24,8 +28,10 @@ app.use(
 // telling passport to use cookies to manage authentication
 app.use(passport.initialize());
 app.use(passport.session());
+/****  end of middleware  ****/
 
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 // heroku provide port ( process.env.PORT )
 const PORT = process.env.PORT || 5000
